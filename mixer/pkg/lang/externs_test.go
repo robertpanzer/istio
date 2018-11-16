@@ -495,3 +495,20 @@ func TestExternConditionalString(t *testing.T) {
 		t.Errorf("externIfElse(%t, \"yes\", \"no\") => %s, wanted: %s", boolExpr, got, "yes")
 	}
 }
+
+func TestExternLength(t *testing.T) {
+	var cases = []struct {
+		s string
+		l int64
+	}{
+		{"", 0},
+		{"a", 1},
+		{"abc", 3},
+	}
+	for _, test := range cases {
+		l := externLength(test.s)
+		if l != test.l {
+			t.Errorf("externLength(\"%v\") => %d, wanted: %d", test.s, l, test.l)
+		}
+	}
+}

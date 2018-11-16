@@ -3067,6 +3067,44 @@ end
 			},
 		},
 	},
+	{
+		E:    `"foo".length()`,
+		Type: descriptor.INT64,
+		R:    int64(3),
+		IL: `
+fn eval() integer
+  apush_s "foo"
+  call length
+  ret
+end`,
+	},
+	{
+		E:    `(request.headers["user-agent"]).length()`,
+		Type: descriptor.INT64,
+		I: map[string]interface{}{
+			"request.headers": map[string]string{
+				"user-agent": "curlish",
+			},
+		},
+		R:    int64(7),
+		conf: istio06AttributeSet,
+	},
+
+	{
+		E:    `as.length() == 2`,
+		Type: descriptor.BOOL,
+		R:    true,
+		IL: `
+fn eval() bool
+  resolve_s "as"
+  call length
+  aeq_i 2
+  ret
+end`,
+		I: map[string]interface{}{
+			"as": "s1",
+		},
+	},
 
 	{
 		E:    `as.reverse()`,

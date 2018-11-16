@@ -60,6 +60,7 @@ func TestGoodParse(t *testing.T) {
 		{`"abc".matches("foo")`, `"abc":matches("foo")`},
 		{`"abc".prefix(23).matches("foo")`, `"abc":prefix(23):matches("foo")`},
 		{`"abc".matches("foo")`, `"abc":matches("foo")`},
+		{`"abc".length()`, `"abc":length()`},
 	}
 	for idx, tt := range tests {
 		t.Run(fmt.Sprintf("[%d] %s", idx, tt.src), func(t *testing.T) {
@@ -311,6 +312,14 @@ func TestInternalTypeCheck(t *testing.T) {
 				{Name: "startswith", Instance: true, TargetType: dpb.STRING, ReturnType: dpb.BOOL, ArgumentTypes: []dpb.ValueType{
 					dpb.STRING,
 				}},
+			},
+			success},
+		{`text.length()`, dpb.INT64,
+			[]*ad{
+				{"text", dpb.STRING},
+			},
+			[]FunctionMetadata{
+				{Name: "length", Instance: true, TargetType: dpb.STRING, ReturnType: dpb.INT64, ArgumentTypes: []dpb.ValueType{}},
 			},
 			success},
 		{`no.matches("a")`, dpb.BOOL,

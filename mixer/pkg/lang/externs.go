@@ -49,6 +49,7 @@ var Externs = map[string]interpreter.Extern{
 	"endsWith":          interpreter.ExternFromFn("endsWith", externEndsWith),
 	"emptyStringMap":    interpreter.ExternFromFn("emptyStringMap", externEmptyStringMap),
 	"conditionalString": interpreter.ExternFromFn("conditionalString", externConditionalString),
+	"length":            interpreter.ExternFromFn("length", externLength),
 }
 
 // ExternFunctionMetadata is the type-metadata about externs. It gets used during compilations.
@@ -113,6 +114,13 @@ var ExternFunctionMetadata = []ast.FunctionMetadata{
 		Name:          "conditionalString",
 		ReturnType:    config.STRING,
 		ArgumentTypes: []config.ValueType{config.BOOL, config.STRING, config.STRING},
+	},
+	{
+		Name:          "length",
+		Instance:      true,
+		TargetType:    config.STRING,
+		ReturnType:    config.INT64,
+		ArgumentTypes: []config.ValueType{},
 	},
 }
 
@@ -333,4 +341,8 @@ func externConditionalString(condition bool, trueStr, falseStr string) string {
 		return trueStr
 	}
 	return falseStr
+}
+
+func externLength(str string) int64 {
+	return int64(len(str))
 }
